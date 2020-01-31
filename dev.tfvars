@@ -1,3 +1,2 @@
-region = "us-west-2"
-
+region          = "us-west-2"
 repository_name = "default"

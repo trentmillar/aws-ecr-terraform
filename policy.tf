@@ -1,7 +1,30 @@
 locals {
-  readers = distinct(concat(var.readers, var.read_writers))
+  readers     = var.readers //distinct(concat(var.readers, var.reader_writers))
+  writers     = var.writers //distinct(concat(var.writers, var.reader_writers))
+  full_access = var.reader_writers
+}
 
-  writers = distinct(concat(var.writers, var.read_writers))
+data "aws_iam_policy_document" "reader_writer" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = local.full_access
+    }
+
+    actions = [
+      /* reader */
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      /* writer */
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload"
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "reader" {

@@ -1,10 +1,11 @@
 variable "region" {
-  type    = string
+  type = string
 }
 
 variable "repository_name" {
-  type = string
+  type        = string
   description = "Name applied to the ECR repository"
+  default     = "default"
 }
 
 variable "readers" {
@@ -17,7 +18,7 @@ variable "writers" {
   default = []
 }
 
-variable "read_writers" {
+variable "reader_writers" {
   type    = list(string)
   default = []
 }
