@@ -13,9 +13,7 @@ data "aws_iam_policy_document" "reader_writer" {
 
     actions = [
       /* reader */
-      "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
       /* writer */
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchCheckLayerAvailability",
