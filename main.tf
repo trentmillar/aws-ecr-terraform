@@ -32,6 +32,29 @@ resource "aws_ecr_lifecycle_policy" "this" {
   policy     = file("./lifecycle.json")
 }
 
+/* begin test */
+
+resource "null_resource" "test" {
+  triggers = {
+    aws_ecr_repository = 10
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+      $(aws ecr get-login --region ${var.region} --no-include-email) && \
+      docker build -t nutrien-cli ./docker-demo && \
+      docker tag nutrien-cli:latest ${aws_ecr_repository.this.repository_url}:latest && \
+      docker push ${aws_ecr_repository.this.repository_url}:latest
+    EOF
+  }
+
+  depends_on = [
+    "aws_ecr_repository.this"
+  ]
+}
+
+/* end test */
+
 locals {
   output = {
     aws_ecr_repository_url = aws_ecr_repository.this.repository_url
