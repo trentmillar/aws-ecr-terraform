@@ -1,0 +1,4 @@
+
+[submodule "docker-demo"]
+	path = docker-demo
+	url = git@github.com:trentmillar/docker-demo.git
